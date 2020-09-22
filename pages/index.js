@@ -10,7 +10,7 @@ import mq from "../helpers/facepaint"
 
 let Pixel = styled.span`
   font-family: Mondwest;
-  font-size: 4vmax;
+  font-size: 3.5vmax;
 `
 
 export default function Home() {
