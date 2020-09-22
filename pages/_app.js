@@ -13,6 +13,7 @@ let globalStyles = css`
 
   body {
     font-feature-settings: "ss01";
+    backgroundcolor: "#F9F7F0";
   }
 
   h1,
