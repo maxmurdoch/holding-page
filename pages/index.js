@@ -96,7 +96,8 @@ export default function Home() {
           fontWeight: "300",
           padding: [24, 40, 60],
         })}
-        style={{ height: `${windowHeight}px` }}>
+        // style={{ height: `${windowHeight}px` }}
+      >
         <header css={mq({ gridColumn: ["span 2", "1 / span 3"] })}>
           <a
             css={{
