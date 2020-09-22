@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.css"
 import { Global, css } from "@emotion/core"
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
+import { useWindowHeight } from "@react-hook/window-size"
 import mq from "../helpers/facepaint"
 
 let globalStyles = css`
@@ -48,6 +49,9 @@ let Pixel = styled.span`
 `
 
 export default function Home() {
+  let windowHeight = useWindowHeight()
+
+  console.log("window height", windowHeight)
   return (
     <div className={styles.container}>
       <Global styles={globalStyles} />
@@ -91,7 +95,8 @@ export default function Home() {
           fontFamily: "ABC",
           fontWeight: "300",
           padding: [24, 40, 60],
-        })}>
+        })}
+        style={{ height: `${windowHeight}px` }}>
         <header css={mq({ gridColumn: ["span 2", "1 / span 3"] })}>
           <a
             css={{
