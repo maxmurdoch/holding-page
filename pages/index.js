@@ -131,8 +131,7 @@ export default function Home() {
               transition={{
                 type: "spring",
                 repeat: Infinity,
-                duration: 3,
-                repeatDelay: 0.8,
+                repeatDelay: 0.5,
               }}
               src="/loading.svg"
               alt="A loading icon"
