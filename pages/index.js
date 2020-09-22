@@ -1,5 +1,5 @@
 import Head from "next/head"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import styles from "../styles/Home.module.css"
 import { css } from "@emotion/core"
 
@@ -23,7 +23,6 @@ export default function Home() {
     }
   }, [windowHeight])
 
-  console.log("window height", windowHeight)
   return (
     <div className={styles.container}>
       <Head>
@@ -62,7 +61,6 @@ export default function Home() {
           color: "#111",
           gridGap: 20,
           height: "100vh",
-          height: "calc(var(--vh, 1vh) * 100)",
           overflow: "hidden",
           width: "100vw",
           fontFamily: "ABC",
