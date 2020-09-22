@@ -1,47 +1,12 @@
 import Head from "next/head"
+import { useEffect, useState } from "react"
 import styles from "../styles/Home.module.css"
+import { css } from "@emotion/core"
 
-import { Global, css } from "@emotion/core"
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
 import { useWindowHeight } from "@react-hook/window-size"
 import mq from "../helpers/facepaint"
-
-let globalStyles = css`
-  * {
-    font-size: 3.5vmax;
-    line-height: 1.4;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-feature-settings: "ss01";
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    margin: 0;
-  }
-
-  @font-face {
-    font-family: "ABC";
-    font-style: normal;
-    font-weight: 300;
-    src: url("/ABCDiatype-Light.woff") format("woff");
-  }
-
-  @font-face {
-    font-family: "Mondwest";
-    font-style: normal;
-    font-weight: 400;
-    src: url("/Mondwest-Regular.woff") format("woff");
-  }
-`
 
 let Pixel = styled.span`
   font-family: Mondwest;
@@ -49,12 +14,17 @@ let Pixel = styled.span`
 `
 
 export default function Home() {
+  let [fullPageHeight, setFullPageHeight] = useState(0)
   let windowHeight = useWindowHeight()
+  useEffect(() => {
+    if (windowHeight !== 0) {
+      setFullPageHeight(windowHeight)
+    }
+  }, [windowHeight])
 
   console.log("window height", windowHeight)
   return (
     <div className={styles.container}>
-      <Global styles={globalStyles} />
       <Head>
         <title>Max Murdoch</title>
         <meta name="title" content="Max Murdoch" />
@@ -90,14 +60,12 @@ export default function Home() {
           backgroundColor: "#F9F7F0",
           color: "#111",
           gridGap: 20,
-          height: "100vh",
+          height: fullPageHeight || "100vh",
           width: "100vw",
           fontFamily: "ABC",
           fontWeight: "300",
           padding: [24, 40, 60],
-        })}
-        // style={{ height: `${windowHeight}px` }}
-      >
+        })}>
         <header css={mq({ gridColumn: ["span 2", "1 / span 3"] })}>
           <a
             css={{
