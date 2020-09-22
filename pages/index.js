@@ -1,65 +1,144 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from "next/head"
+import styles from "../styles/Home.module.css"
+
+import { Global, css } from "@emotion/core"
+import styled from "@emotion/styled"
+import { motion } from "framer-motion"
+import mq from "../helpers/facepaint"
+
+let globalStyles = css`
+  * {
+    font-size: 3.5vmax;
+    line-height: 1.4;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-feature-settings: "ss01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+
+  @font-face {
+    font-family: "ABC";
+    font-style: normal;
+    font-weight: 300;
+    src: url("/ABCDiatype-Light.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Mondwest";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/Mondwest-Regular.woff") format("woff");
+  }
+`
+
+let Pixel = styled.span`
+  font-family: Mondwest;
+  font-size: 4vmax;
+`
 
 export default function Home() {
   return (
     <div className={styles.container}>
+      <Global styles={globalStyles} />
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Max Murdoch – A tiny design & development studio in London</title>
+        <link rel="icon" href="/loading.png" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
+      <main
+        css={mq({
+          display: "grid",
+          gridTemplateColumns: "repeat(12, 1fr)",
+          backgroundColor: "#F9F7F0",
+          color: "#111",
+          gridGap: 20,
+          height: "100vh",
+          width: "100vw",
+          fontFamily: "ABC",
+          fontWeight: "300",
+          padding: [24, 40, 60],
+        })}>
+        <header css={mq({ gridColumn: ["span 2", "1 / span 3"] })}>
           <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
+            css={{
+              display: "flex",
+              "&:hover h1:after": {
+                transform: "skew(0) translateZ(0)",
+              },
+            }}
+            href="mailto:max@maxmurdo.ch">
+            <h1
+              css={css`
+                font-family: "Mondwest", Helvetica Neue, Helvetica, sans-serif;
+                font-weight: 300;
+                margin-right: 16px;
+                position: relative;
+                display: inline-block;
+                &:after {
+                  content: " ";
+                  position: absolute;
+                  bottom: 8px;
+                  left: 0;
+                  width: 100%;
+                  height: 2px;
+                  background: #111;
+                  opacity: 1;
+                  transform-origin: center;
+                  transform: skew(70deg, 4deg) translateZ(0);
+                  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+                }
+              `}>
+              Max
+            </h1>
+            <motion.img
+              animate={{ rotate: 180 }}
+              transition={{
+                type: "spring",
+                repeat: Infinity,
+                duration: 3,
+                repeatDelay: 0.8,
+              }}
+              src="/loading.svg"
+              alt="A loading icon"
+              css={mq({ width: "2.5vmax", alignSelf: "baseline" })}
+            />
           </a>
+        </header>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <section
+          css={mq({
+            gridColumn: ["span 12", "5 / span 4"],
+            alignSelf: "center",
+            marginBottom: ["5%", "10%"],
+          })}>
+          <p>
+            <Pixel>Tiny</Pixel>
+            <br />
+            design&nbsp;<Pixel>&</Pixel>&nbsp;development
+            <br />
+            <Pixel>studio in</Pixel> London
+          </p>
+        </section>
+
+        <section css={mq({ gridColumn: ["span 12", "9 / span 4"], alignSelf: "end" })}>
+          <p>
+            <Pixel>New site coming</Pixel>
+            <br />
+            A/W 2020
+          </p>
+        </section>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
     </div>
   )
 }
