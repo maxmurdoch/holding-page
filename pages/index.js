@@ -14,11 +14,12 @@ let Pixel = styled.span`
 `
 
 export default function Home() {
-  let [fullPageHeight, setFullPageHeight] = useState(0)
   let windowHeight = useWindowHeight()
+
   useEffect(() => {
     if (windowHeight !== 0) {
-      setFullPageHeight(windowHeight)
+      let vh = windowHeight * 0.01
+      document.documentElement.style.setProperty("--vh", `${vh}px`)
     }
   }, [windowHeight])
 
@@ -60,7 +61,8 @@ export default function Home() {
           backgroundColor: "#F9F7F0",
           color: "#111",
           gridGap: 20,
-          height: fullPageHeight || "100vh",
+          height: "100vh",
+          height: "calc(var(--vh, 1vh) * 100)",
           overflow: "hidden",
           width: "100vw",
           fontFamily: "ABC",
