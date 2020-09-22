@@ -61,6 +61,7 @@ export default function Home() {
           color: "#111",
           gridGap: 20,
           height: fullPageHeight || "100vh",
+          overflow: "hidden",
           width: "100vw",
           fontFamily: "ABC",
           fontWeight: "300",
