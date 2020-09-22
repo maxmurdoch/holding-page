@@ -96,6 +96,7 @@ export default function Home() {
           <a
             css={{
               display: "flex",
+              alignItems: "baseline",
               "&:hover h1:after": {
                 transform: "skew(0) translateZ(0)",
               },
@@ -108,10 +109,11 @@ export default function Home() {
                 margin-right: 16px;
                 position: relative;
                 display: inline-block;
+                line-height: 1;
                 &:after {
                   content: " ";
                   position: absolute;
-                  bottom: 8px;
+                  bottom: 0px;
                   left: 0;
                   width: 100%;
                   height: 2px;
@@ -134,7 +136,7 @@ export default function Home() {
               }}
               src="/loading.svg"
               alt="A loading icon"
-              css={mq({ width: "2.5vmax", alignSelf: "baseline" })}
+              css={mq({ width: "2vmax" })}
             />
           </a>
         </header>
