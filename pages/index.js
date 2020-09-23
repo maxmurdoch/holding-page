@@ -14,14 +14,14 @@ let Pixel = styled.span`
 `
 
 export default function Home() {
-  let windowHeight = useWindowHeight()
+  // let windowHeight = useWindowHeight()
 
-  useEffect(() => {
-    if (windowHeight !== 0) {
-      let vh = windowHeight * 0.01
-      document.documentElement.style.setProperty("--vh", `${vh}px`)
-    }
-  }, [windowHeight])
+  // useEffect(() => {
+  //   if (windowHeight !== 0) {
+  //     let vh = windowHeight * 0.01
+  //     document.documentElement.style.setProperty("--vh", `${vh}px`)
+  //   }
+  // }, [windowHeight])
 
   return (
     <div className={styles.container}>

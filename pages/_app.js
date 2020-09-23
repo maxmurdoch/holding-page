@@ -11,9 +11,14 @@ let globalStyles = css`
     box-sizing: border-box;
   }
 
+  html {
+    height: -webkit-fill-available;
+  }
   body {
     font-feature-settings: "ss01";
-    backgroundcolor: "#F9F7F0";
+    background-color: #f9f7f0;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
   }
 
   h1,
