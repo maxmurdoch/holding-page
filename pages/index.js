@@ -74,7 +74,7 @@ export default function Home() {
             display: "flex",
             alignItems: "baseline",
             "&:hover h1:after": {
-              transform: "skew(0) translateZ(0)",
+              transform: "translateY(2px) scaleY(1) translateZ(0)",
             },
           }}
           href="mailto:max@maxmurdo.ch">
@@ -96,7 +96,7 @@ export default function Home() {
                 background: #111;
                 opacity: 1;
                 transform-origin: center;
-                transform: skew(70deg, 4deg) translateZ(0);
+                transform: translateY(0) scaleY(0.5) translateZ(0);
                 transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
               }
             `}>
@@ -125,7 +125,7 @@ export default function Home() {
         <p>
           <Pixel>Tiny</Pixel>
           <br />
-          design&nbsp;<Pixel>&</Pixel>&nbsp;development
+          design&nbsp;<Pixel>&</Pixel>&nbsp;dev
           <br />
           <Pixel>studio in</Pixel> London
         </p>
@@ -133,8 +133,11 @@ export default function Home() {
 
       <footer css={mq({ gridColumn: ["span 12", "9 / span 4"], alignSelf: "end" })}>
         <p>
-          <Pixel>New site coming</Pixel>
-          <br />
+          <Pixel>
+            New site
+            <br />
+            coming
+          </Pixel>{" "}
           A/W 2020
         </p>
       </footer>
