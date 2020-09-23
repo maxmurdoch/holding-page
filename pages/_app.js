@@ -2,8 +2,6 @@ import NextApp from "next/app"
 import { Global, CacheProvider, css } from "@emotion/core"
 import { cache } from "emotion"
 
-import "../styles/globals.css"
-
 let globalStyles = css`
   * {
     font-size: 3vmax;
@@ -11,10 +9,20 @@ let globalStyles = css`
     box-sizing: border-box;
   }
 
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   html {
     height: -webkit-fill-available;
   }
+
   body {
+    margin: 0;
+    padding: 0;
+    font-family: ABC, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+      Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     font-feature-settings: "ss01";
     background-color: #f9f7f0;
     min-height: 100vh;
