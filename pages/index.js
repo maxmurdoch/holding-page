@@ -14,14 +14,14 @@ let Pixel = styled.span`
 `
 
 export default function Home() {
-  // let windowHeight = useWindowHeight()
+  let windowHeight = useWindowHeight()
 
-  // useEffect(() => {
-  //   if (windowHeight !== 0) {
-  //     let vh = windowHeight * 0.01
-  //     document.documentElement.style.setProperty("--vh", `${vh}px`)
-  //   }
-  // }, [windowHeight])
+  useEffect(() => {
+    if (windowHeight !== 0) {
+      let vh = windowHeight * 0.01
+      document.documentElement.style.setProperty("--vh", `${vh}px`)
+    }
+  }, [windowHeight])
 
   return (
     <div className={styles.container}>
@@ -60,7 +60,7 @@ export default function Home() {
           backgroundColor: "#F9F7F0",
           color: "#111",
           gridGap: 20,
-          height: "100vh",
+          height: "calc(var(--vh, 1vh) * 100)",
           overflow: "hidden",
           width: "100vw",
           fontFamily: "ABC",
