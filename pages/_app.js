@@ -5,7 +5,6 @@ import { cache } from "emotion"
 let globalStyles = css`
   * {
     font-size: 3vmax;
-    line-height: 1.4;
     box-sizing: border-box;
   }
 

@@ -4,7 +4,6 @@ import { css } from "@emotion/core"
 
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
-import { useWindowHeight } from "@react-hook/window-size"
 import useWindowSize from "../hooks/use-window-size"
 import mq from "../helpers/facepaint"
 
@@ -34,6 +33,7 @@ export default function Home() {
         height: "-webkit-fill-available",
         overflow: "hidden",
         width: "100vw",
+        lineHeight: [1.4, 1.2],
         fontWeight: "300",
         padding: [24, 40, 60],
       })}
@@ -72,36 +72,13 @@ export default function Home() {
         <a
           css={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "baseline",
             "&:hover h1:after": {
               transform: "translateY(2px) scaleY(1) translateZ(0)",
             },
           }}
           href="mailto:max@maxmurdo.ch">
-          <h1
-            css={css`
-              font-family: "Mondwest", Helvetica Neue, Helvetica, sans-serif;
-              font-weight: 300;
-              margin-right: 16px;
-              position: relative;
-              display: inline-block;
-              line-height: 1;
-              &:after {
-                content: " ";
-                position: absolute;
-                bottom: 0px;
-                left: 0;
-                width: 100%;
-                height: 2px;
-                background: #111;
-                opacity: 1;
-                transform-origin: center;
-                transform: translateY(0) scaleY(0.5) translateZ(0);
-                transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-              }
-            `}>
-            Max
-          </h1>
           <motion.img
             animate={{ rotate: 180 }}
             transition={{
@@ -113,6 +90,30 @@ export default function Home() {
             alt="A loading icon"
             css={mq({ width: "2vmax" })}
           />
+          <h1
+            css={{
+              fontWeight: 300,
+              marginTop: ["12px", "8px"],
+              position: "relative",
+              display: "inline-block",
+              // "&:after": {
+              //   content: "''",
+              //   position: "absolute",
+              //   bottom: 0,
+              //   left: 0,
+              //   width: "100%",
+              //   height: "2px",
+              //   background: "#111",
+              //   opacity: 1,
+              //   transformOrigin: "center",
+              //   transform: "translateY(0) scaleY(0.5) translateZ(0)",
+              //   transition: "transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)",
+              // },
+            }}>
+            Max (@)
+            <br />
+            <Pixel> Murdoch</Pixel>
+          </h1>
         </a>
       </header>
 
