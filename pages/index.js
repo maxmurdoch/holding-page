@@ -40,34 +40,6 @@ export default function Home() {
       style={{
         height: "100vh",
       }}>
-      <Head>
-        <title>Max Murdoch</title>
-        <meta name="title" content="Max Murdoch" />
-        <meta
-          name="description"
-          content="A tiny design & development studio in London. New site coming A/W 2020."
-        />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://maxmurdo.ch/" />
-        <meta property="og:title" content="Max Murdoch" />
-        <meta
-          property="og:description"
-          content="A tiny design & development studio in London. New site coming A/W 2020."
-        />
-        <meta property="og:image" content="/meta.png" />
-
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://maxmurdo.ch/" />
-        <meta property="twitter:title" content="Max Murdoch" />
-        <meta
-          property="twitter:description"
-          content="A tiny design & development studio in London. New site coming A/W 2020."
-        />
-        <meta property="twitter:image" content="/meta.png"></meta>
-        <link rel="icon" href="/loading.png" />
-      </Head>
-
       <header css={mq({ gridColumn: ["span 2", "1 / span 3"] })}>
         <a
           css={{
