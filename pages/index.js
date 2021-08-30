@@ -1,6 +1,4 @@
-import Head from "next/head"
 import { useEffect } from "react"
-import { css } from "@emotion/core"
 
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
@@ -111,7 +109,7 @@ export default function Home() {
             <br />
             coming
           </Pixel>{" "}
-          A/W 2020
+          A/W 2021
         </p>
       </footer>
     </div>
