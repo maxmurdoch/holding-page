@@ -4,7 +4,6 @@ import { cache } from "emotion"
 
 let globalStyles = css`
   * {
-    font-size: 3vmax;
     box-sizing: border-box;
   }
 
@@ -26,6 +25,7 @@ let globalStyles = css`
     background-color: #f9f7f0;
     min-height: 100vh;
     min-height: -webkit-fill-available;
+    font-size: 16px;
   }
 
   h1,
