@@ -4,6 +4,8 @@ import { motion } from "framer-motion"
 import useWindowSize from "../hooks/use-window-size"
 import mq from "../helpers/facepaint"
 
+let sansFontSize = ["1.6rem", "3vmax"]
+
 let Pixel = ({ children, ...props }) => {
   return (
     <span
@@ -37,7 +39,7 @@ export default function Home() {
         height: "-webkit-fill-available",
         overflow: "hidden",
         width: "100vw",
-        fontSize: ["1.6rem", "3vmax"],
+        fontSize: sansFontSize,
         lineHeight: [1.4, 1.2],
         fontWeight: "300",
         padding: [24, 40, 60],
@@ -57,7 +59,7 @@ export default function Home() {
             ease: "easeInOut",
             type: "tween",
           }}
-          css={mq({ color: "#F9F7F0", display: "inline", width: "2vmax" })}
+          css={mq({ color: "#F9F7F0", display: "inline", width: ["2rem", "3vmax"] })}
         />
         <a
           css={{
@@ -70,13 +72,13 @@ export default function Home() {
           }}
           href="mailto:max@maxmurdo.ch">
           <h1
-            css={{
+            css={mq({
               fontWeight: 300,
               marginTop: ["12px", "8px"],
               position: "relative",
               display: "inline-block",
-              fontSize: ["1.6rem", "3vmax"],
-            }}>
+              fontSize: sansFontSize,
+            })}>
             Max
             <br />
             <Pixel> Murdoch</Pixel>
