@@ -93,7 +93,7 @@ export default function Home() {
           marginBottom: ["5%", "10%"],
         })}>
         <p>
-          Product Design Lead
+          Principal Product Designer
           <br />
           @&nbsp;
           <Pixel>
