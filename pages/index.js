@@ -1,21 +1,26 @@
 import { useEffect } from "react"
 
+import PropTypes from "prop-types"
 import { motion } from "framer-motion"
 import useWindowSize from "../hooks/use-window-size"
 import mq from "../helpers/facepaint"
 
-let sansFontSize = ["1.6rem", "3vmax"]
+let sansFontSize = ["1.6rem", "2.5vmax"]
 
-let Pixel = ({ children, ...props }) => {
+let Pixel = ({ children }) => {
   return (
     <span
       css={mq({
         fontFamily: "Mondwest",
-        fontSize: ["1.8rem", "3.6vmax"],
+        fontSize: ["1.8rem", "2.8vmax"],
       })}>
       {children}
     </span>
   )
+}
+
+Pixel.propTypes = {
+  children: PropTypes.children,
 }
 
 export default function Home() {
@@ -61,16 +66,12 @@ export default function Home() {
           }}
           css={mq({ color: "#F9F7F0", display: "inline", width: ["2rem", "3vmax"] })}
         />
-        <a
+        <div
           css={{
             display: "flex",
             flexDirection: "column",
             alignItems: "baseline",
-            "&:hover h1:after": {
-              transform: "translateY(2px) scaleY(1) translateZ(0)",
-            },
-          }}
-          href="mailto:max@maxmurdo.ch">
+          }}>
           <h1
             css={mq({
               fontWeight: 300,
@@ -83,7 +84,7 @@ export default function Home() {
             <br />
             <Pixel> Murdoch</Pixel>
           </h1>
-        </a>
+        </div>
       </header>
 
       <main
@@ -109,7 +110,15 @@ export default function Home() {
       </main>
 
       <footer css={mq({ gridColumn: ["span 12", "9 / span 4"], alignSelf: "end" })}>
-        <p>max@maxmurdo.ch</p>
+        <a
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "baseline",
+          }}
+          href="mailto:max@maxmurdo.ch">
+          <p>max@maxmurdo.ch</p>
+        </a>
       </footer>
     </div>
   )

@@ -10,27 +10,31 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "dependencies": {
-    "@emotion/babel-preset-css-prop": "^10.0.27",
-    "@emotion/core": "^10.0.35",
-    "@emotion/styled": "^10.0.27",
-    "@react-hook/window-size": "^3.0.7",
-    "emotion": "^10.0.27",
-    "emotion-server": "^10.0.27",
+    "@emotion/babel-preset-css-prop": "^11.10.0",
+    "@emotion/cache": "^11.10.3",
+    "@emotion/css": "^11.10.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.4",
+    "@react-hook/window-size": "^3.1.1",
     "facepaint": "^1.2.1",
-    "framer-motion": "^2.6.15",
-    "next": "9.5.3",
-    "next-fonts": "^1.4.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "framer-motion": "^7.5.3",
+    "next": "^12.3.1",
+    "next-fonts": "^1.5.1",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.2",
-    "eslint-plugin-simple-import-sort": "^5.0.3",
-    "prettier": "^2.1.2"
+    "@emotion/babel-plugin": "^11.10.2",
+    "@emotion/eslint-plugin": "^11.10.0",
+    "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "prettier": "^2.7.1"
   }
 }

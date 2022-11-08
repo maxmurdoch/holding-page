@@ -1,43 +1,21 @@
 import Document, { Html, Head, Main, NextScript } from "next/document"
-import { extractCritical } from "emotion-server"
 import { GA_TRACKING_ID } from "../helpers/gtag"
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx)
-    const styles = extractCritical(initialProps.html)
-
-    return {
-      ...initialProps,
-      styles: (
-        <>
-          {initialProps.styles}
-          <style
-            data-emotion-css={styles.ids.join(" ")}
-            dangerouslySetInnerHTML={{ __html: styles.css }}
-          />
-        </>
-      ),
-    }
-  }
-
   render() {
     return (
       <Html>
         <Head>
           <title>Max Murdoch</title>
           <meta name="title" content="Max Murdoch" />
-          <meta
-            name="description"
-            content="A tiny design & development studio in London. New site coming A/W 2020."
-          />
+          <meta name="description" content="A Principal Product Designer in London, England." />
 
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://maxmurdo.ch/" />
           <meta property="og:title" content="Max Murdoch" />
           <meta
             property="og:description"
-            content="A tiny design & development studio in London. New site coming A/W 2020."
+            content="A Principal Product Designer in London, England."
           />
           <meta property="og:image" content="/meta.png" />
 
@@ -46,7 +24,7 @@ export default class MyDocument extends Document {
           <meta property="twitter:title" content="Max Murdoch" />
           <meta
             property="twitter:description"
-            content="A tiny design & development studio in London. New site coming A/W 2020."
+            content="A Principal Product Designer in London, England."
           />
           <meta property="twitter:image" content="/meta.png"></meta>
           <link rel="icon" href="/loading.png" />

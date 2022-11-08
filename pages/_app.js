@@ -1,6 +1,5 @@
 import NextApp from "next/app"
-import { Global, CacheProvider, css } from "@emotion/core"
-import { cache } from "emotion"
+import { Global, css } from "@emotion/react"
 
 let globalStyles = css`
   * {
@@ -58,10 +57,10 @@ class MyApp extends NextApp {
     let { Component, pageProps } = this.props
 
     return (
-      <CacheProvider value={cache}>
+      <>
         <Global styles={globalStyles} />
         <Component {...pageProps} />
-      </CacheProvider>
+      </>
     )
   }
 }
