@@ -1,8 +1,10 @@
 import styles from "./page.module.css";
+import { DitherBackground } from "./DitherBackground";
 
 export default function Home() {
   return (
     <main className={styles.main}>
+      <DitherBackground />
       <p className={styles.label}>
         <span className={styles.name}>Max Murdoch</span>
         <br />
