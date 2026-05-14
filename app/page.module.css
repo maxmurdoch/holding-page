@@ -7,10 +7,22 @@
 }
 
 .label {
-  font-size: 4vw;
+  font-size: 6vw;
   font-weight: 300;
   line-height: 1.4;
   letter-spacing: -0.02em;
+}
+
+@media (min-width: 480px) {
+  .label {
+    font-size: 5vw;
+  }
+}
+
+@media (min-width: 768px) {
+  .label {
+    font-size: 4vw;
+  }
 }
 
 .name {
