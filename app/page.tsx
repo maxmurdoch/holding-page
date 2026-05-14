@@ -14,7 +14,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Jack &amp; Jill <span className={styles.arrow}>↗</span>
+            Jack &amp; Jill
           </a>
         </span>
       </p>
