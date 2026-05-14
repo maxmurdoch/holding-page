@@ -197,7 +197,7 @@ export function DitherBackground() {
       u_colorBack: getShaderColorFromString("#00000000"),
       u_colorHighlight: getShaderColorFromString("#BFFBFF"),
       u_type: DitheringTypes["8x8"],
-      u_pxSize: 4.9,
+      u_pxSize: 7,
       u_colorSteps: 2,
       u_originalColors: false,
       u_inverted: false,
