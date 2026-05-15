@@ -10,15 +10,13 @@ import {
 } from "@paper-design/shaders";
 
 const DITHER_IMAGE_URL =
-  "https://app.paper.design/file-assets/01KRM7V7Y8VM0560CA6NXHRCJP/01KRM7ZWTDTEEYQ8ZDQ5JJ0V1Q.png";
+  "/images/dither-source-384.png";
 
-const MOUSE_REPULSION_RADIUS = 235;
-const MOUSE_REPULSION_FORCE = 62;
+const MOUSE_REPULSION_RADIUS = 300;
+const MOUSE_REPULSION_FORCE = 72;
 const MOUSE_TAIL_RADIUS = 155;
 const MOUSE_TAIL_STRENGTH = 0.9;
-const MOUSE_REVEAL_STRENGTH = 0.9;
-const MOUSE_INVERT_STRENGTH = 0.7;
-const REVEAL_PIXEL_SIZE = 3;
+const MOUSE_SWIRL_STRENGTH = 0.85;
 
 const imageDitheringInteractiveFragmentShader = imageDitheringFragmentShader
   .replace(
@@ -30,9 +28,7 @@ uniform float u_mouseRadius;
 uniform float u_mouseForce;
 uniform float u_tailRadius;
 uniform float u_tailStrength;
-uniform float u_revealStrength;
-uniform float u_invertStrength;
-uniform float u_revealPixelSize;`,
+uniform float u_swirlStrength;`,
   )
   .replace(
     `vec2 pxSizeUV = gl_FragCoord.xy - .5 * u_resolution;
@@ -58,7 +54,9 @@ uniform float u_revealPixelSize;`,
   vec2 deltaFromMouse = canvasPixelizedUV - mousePx;
   float mouseDistance = length(deltaFromMouse);
   float mouseFalloff = smoothstep(u_mouseRadius, 0.0, mouseDistance);
+  float mouseCoreFalloff = pow(mouseFalloff, 1.9);
   vec2 mouseDirection = mouseDistance > 0.0001 ? deltaFromMouse / mouseDistance : vec2(0.0);
+  vec2 swirlDirection = vec2(-mouseDirection.y, mouseDirection.x);
 
   float tailExtent = min(max(motionLength * 8.0, 0.0), u_tailRadius * 2.5);
   float alongTrail = dot(canvasPixelizedUV - mousePx, -motionDir);
@@ -70,45 +68,12 @@ uniform float u_revealPixelSize;`,
   tailMask *= smoothstep(0.0, 1.0, motionLength / 3.0) * u_tailStrength;
 
   vec2 displacedCanvasPixelizedUV = canvasPixelizedUV
-    + mouseDirection * mouseFalloff * u_mouseForce
-    + motionDir * tailMask * (u_mouseForce * 0.45);
-
-  float revealMask = clamp(
-    mouseFalloff * u_revealStrength + tailMask * (u_revealStrength * 0.6),
-    0.0,
-    1.0
-  );
-  float invertMask = clamp(
-    smoothstep(u_mouseRadius * 0.85, 0.0, mouseDistance) * u_invertStrength
-      + tailMask * (u_invertStrength * 0.45),
-    0.0,
-    1.0
-  );
+    + mouseDirection * mouseCoreFalloff * u_mouseForce
+    + motionDir * tailMask * (u_mouseForce * 0.45)
+    + swirlDirection * mouseCoreFalloff * u_mouseForce * u_swirlStrength * 0.35;
 
   vec2 normalizedUV = canvasPixelizedUV / u_resolution;
   pxSizeUV = (displacedCanvasPixelizedUV - .5 * u_resolution) / pxSize;`,
-  )
-  .replace(
-    "vec4 image = texture(u_image, imageUV);",
-    `float revealPx = max(1.0, u_revealPixelSize * u_pixelRatio);
-  vec2 revealCanvasPixelizedUV = (floor(canvasPixelizedUV / revealPx) + 0.5) * revealPx;
-  vec2 revealNormalizedUV = revealCanvasPixelizedUV / u_resolution;
-  vec2 revealImageUV = getImageUV(revealNormalizedUV);
-  vec4 image = texture(u_image, imageUV);
-  vec4 revealImage = texture(u_image, revealImageUV);`,
-  )
-  .replace(
-    `float lum = dot(vec3(.2126, .7152, .0722), image.rgb);
-  lum = u_inverted ? (1. - lum) : lum;`,
-    `float lum = dot(vec3(.2126, .7152, .0722), image.rgb);
-  lum = u_inverted ? (1. - lum) : lum;
-  lum = mix(lum, 1.0 - lum, invertMask);`,
-  )
-  .replace(
-    "fragColor = vec4(color, opacity);",
-    `color = mix(color, revealImage.rgb, revealMask);
-  opacity = max(opacity, revealImage.a * revealMask);
-  fragColor = vec4(color, opacity);`,
   )
   .replace(
     "vec2 ditheringNoiseUV = canvasPixelizedUV;",
@@ -216,9 +181,7 @@ export function DitherBackground() {
       u_mouseForce: isHovering ? MOUSE_REPULSION_FORCE : 0,
       u_tailRadius: isHovering ? MOUSE_TAIL_RADIUS : 0,
       u_tailStrength: isHovering ? MOUSE_TAIL_STRENGTH : 0,
-      u_revealStrength: isHovering ? MOUSE_REVEAL_STRENGTH : 0,
-      u_invertStrength: isHovering ? MOUSE_INVERT_STRENGTH : 0,
-      u_revealPixelSize: REVEAL_PIXEL_SIZE,
+      u_swirlStrength: isHovering ? MOUSE_SWIRL_STRENGTH : 0,
     }),
     [isHovering, mouse.x, mouse.y, mousePrev.x, mousePrev.y],
   );
