@@ -9,8 +9,8 @@ import {
   imageDitheringFragmentShader,
 } from "@paper-design/shaders";
 
-const DITHER_IMAGE_URL =
-  "/images/dither-source-384.png";
+const PHOTO_IMAGE_URL = "/images/dither-source-384.png";
+const WIDE_IMAGE_URL = "/images/dither-source-wide.png";
 
 const MOUSE_REPULSION_RADIUS = 300;
 const MOUSE_REPULSION_FORCE = 72;
@@ -38,7 +38,7 @@ uniform float u_swirlStrength;`,
     `vec2 pxSizeUV = gl_FragCoord.xy - .5 * u_resolution;
   pxSizeUV /= pxSize;
   vec2 canvasPixelizedUV = (floor(pxSizeUV) + .5) * pxSize;
-  
+
   vec2 mousePx = vec2(
     (u_mouse.x - 0.5) * u_resolution.x,
     (0.5 - u_mouse.y) * u_resolution.y
@@ -80,12 +80,78 @@ uniform float u_swirlStrength;`,
     "vec2 ditheringNoiseUV = displacedCanvasPixelizedUV;",
   );
 
-export function DitherBackground() {
+type DitherLayerProps = {
+  imageUrl: string;
+  originX: number;
+  mouse: { x: number; y: number };
+  mousePrev: { x: number; y: number };
+  isHovering: boolean;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+};
+
+function DitherLayer({
+  imageUrl,
+  originX,
+  mouse,
+  mousePrev,
+  isHovering,
+  containerRef,
+}: DitherLayerProps) {
+  const uniforms = useMemo(
+    () => ({
+      u_image: imageUrl,
+      u_colorFront: getShaderColorFromString("#8FC0FF"),
+      u_colorBack: getShaderColorFromString("#00000000"),
+      u_colorHighlight: getShaderColorFromString("#BFFBFF"),
+      u_type: DitheringTypes["8x8"],
+      u_pxSize: 7,
+      u_colorSteps: 2,
+      u_originalColors: false,
+      u_inverted: false,
+      u_fit: ShaderFitOptions.cover,
+      u_scale: 1,
+      u_rotation: 0,
+      u_offsetX: 0,
+      u_offsetY: 0,
+      u_originX: originX,
+      u_originY: 0.5,
+      u_worldWidth: 1,
+      u_worldHeight: 1,
+      u_mouse: [mouse.x, mouse.y],
+      u_mousePrev: [mousePrev.x, mousePrev.y],
+      u_mouseRadius: MOUSE_REPULSION_RADIUS,
+      u_mouseForce: isHovering ? MOUSE_REPULSION_FORCE : 0,
+      u_tailRadius: isHovering ? MOUSE_TAIL_RADIUS : 0,
+      u_tailStrength: isHovering ? MOUSE_TAIL_STRENGTH : 0,
+      u_swirlStrength: isHovering ? MOUSE_SWIRL_STRENGTH : 0,
+    }),
+    [imageUrl, originX, isHovering, mouse.x, mouse.y, mousePrev.x, mousePrev.y],
+  );
+
+  return (
+    <div ref={containerRef} style={{ position: "absolute", inset: 0 }}>
+      <ShaderMount
+        fragmentShader={imageDitheringInteractiveFragmentShader}
+        uniforms={uniforms}
+        width="100%"
+        height="100%"
+        style={{ backgroundColor: "transparent" }}
+      />
+    </div>
+  );
+}
+
+type LayerMouseState = {
+  mouse: { x: number; y: number };
+  mousePrev: { x: number; y: number };
+  isHovering: boolean;
+};
+
+function useLayerMouse(containerRef: React.RefObject<HTMLDivElement | null>): LayerMouseState {
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
   const [mousePrev, setMousePrev] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
   const frameRef = useRef<number | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const hoveringRef = useRef(false);
   const pendingMouseRef = useRef({ x: 0.5, y: 0.5 });
   const pendingMousePrevRef = useRef({ x: 0.5, y: 0.5 });
@@ -98,29 +164,21 @@ export function DitherBackground() {
     };
   }, []);
 
-  const scheduleMouseUpdate = () => {
-    if (frameRef.current !== null) {
-      return;
-    }
-
-    frameRef.current = requestAnimationFrame(() => {
-      frameRef.current = null;
-      setMousePrev(pendingMousePrevRef.current);
-      setMouse(pendingMouseRef.current);
-    });
-  };
-
   useEffect(() => {
-    const handleWindowPointerMove = (event: PointerEvent) => {
-      const container = containerRef.current;
-      if (!container) {
-        return;
-      }
+    const schedule = () => {
+      if (frameRef.current !== null) return;
+      frameRef.current = requestAnimationFrame(() => {
+        frameRef.current = null;
+        setMousePrev(pendingMousePrevRef.current);
+        setMouse(pendingMouseRef.current);
+      });
+    };
 
+    const handle = (event: PointerEvent) => {
+      const container = containerRef.current;
+      if (!container) return;
       const rect = container.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) {
-        return;
-      }
+      if (rect.width === 0 || rect.height === 0) return;
 
       const isInside =
         event.clientX >= rect.left &&
@@ -138,74 +196,60 @@ export function DitherBackground() {
 
       const normalizedX = (event.clientX - rect.left) / rect.width;
       const normalizedY = (event.clientY - rect.top) / rect.height;
-
       pendingMousePrevRef.current = pendingMouseRef.current;
       pendingMouseRef.current = { x: normalizedX, y: normalizedY };
       if (!hoveringRef.current) {
         hoveringRef.current = true;
         setIsHovering(true);
       }
-      scheduleMouseUpdate();
+      schedule();
     };
 
-    window.addEventListener("pointermove", handleWindowPointerMove);
+    window.addEventListener("pointermove", handle);
+    return () => window.removeEventListener("pointermove", handle);
+  }, [containerRef]);
 
-    return () => {
-      window.removeEventListener("pointermove", handleWindowPointerMove);
-    };
-  }, []);
+  return { mouse, mousePrev, isHovering };
+}
 
-  const uniforms = useMemo(
-    () => ({
-      u_image: DITHER_IMAGE_URL,
-      u_colorFront: getShaderColorFromString("#8FC0FF"),
-      u_colorBack: getShaderColorFromString("#00000000"),
-      u_colorHighlight: getShaderColorFromString("#BFFBFF"),
-      u_type: DitheringTypes["8x8"],
-      u_pxSize: 7,
-      u_colorSteps: 2,
-      u_originalColors: false,
-      u_inverted: false,
-      u_fit: ShaderFitOptions.cover,
-      u_scale: 1,
-      u_rotation: 0,
-      u_offsetX: 0,
-      u_offsetY: 0,
-      u_originX: 0.5,
-      u_originY: 0.5,
-      u_worldWidth: 1,
-      u_worldHeight: 1,
-      u_mouse: [mouse.x, mouse.y],
-      u_mousePrev: [mousePrev.x, mousePrev.y],
-      u_mouseRadius: MOUSE_REPULSION_RADIUS,
-      u_mouseForce: isHovering ? MOUSE_REPULSION_FORCE : 0,
-      u_tailRadius: isHovering ? MOUSE_TAIL_RADIUS : 0,
-      u_tailStrength: isHovering ? MOUSE_TAIL_STRENGTH : 0,
-      u_swirlStrength: isHovering ? MOUSE_SWIRL_STRENGTH : 0,
-    }),
-    [isHovering, mouse.x, mouse.y, mousePrev.x, mousePrev.y],
-  );
+export function DitherBackground() {
+  const wideRef = useRef<HTMLDivElement | null>(null);
+  const portraitRef = useRef<HTMLDivElement | null>(null);
+  const wideMouse = useLayerMouse(wideRef);
+  const portraitMouse = useLayerMouse(portraitRef);
 
   return (
     <div
-      ref={containerRef}
       aria-hidden="true"
       style={{
         position: "absolute",
         inset: 0,
         pointerEvents: "none",
         zIndex: 0,
+        backgroundColor: "#003BFF",
+        overflow: "hidden",
       }}
     >
-      <ShaderMount
-        fragmentShader={imageDitheringInteractiveFragmentShader}
-        uniforms={uniforms}
-        width="100%"
-        height="100%"
-        style={{
-          backgroundColor: "#003BFF",
-        }}
-      />
+      <div data-dither-wide style={{ position: "absolute", inset: 0 }}>
+        <DitherLayer
+          imageUrl={WIDE_IMAGE_URL}
+          originX={1}
+          mouse={wideMouse.mouse}
+          mousePrev={wideMouse.mousePrev}
+          isHovering={wideMouse.isHovering}
+          containerRef={wideRef}
+        />
+      </div>
+      <div data-dither-portrait style={{ position: "absolute", inset: 0 }}>
+        <DitherLayer
+          imageUrl={PHOTO_IMAGE_URL}
+          originX={0.5}
+          mouse={portraitMouse.mouse}
+          mousePrev={portraitMouse.mousePrev}
+          isHovering={portraitMouse.isHovering}
+          containerRef={portraitRef}
+        />
+      </div>
     </div>
   );
 }

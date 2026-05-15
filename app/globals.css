@@ -58,3 +58,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Landscape: use a single wide composite image (photo + integrated fade)
+   so there's no compositing seam between layers. */
+[data-dither-wide] {
+  display: block;
+}
+[data-dither-portrait] {
+  display: none;
+}
+
+/* Portrait/square: use the photo-only image so it can cover-fill the viewport. */
+@media (max-aspect-ratio: 1 / 1) {
+  [data-dither-wide] {
+    display: none;
+  }
+  [data-dither-portrait] {
+    display: block;
+  }
+}
